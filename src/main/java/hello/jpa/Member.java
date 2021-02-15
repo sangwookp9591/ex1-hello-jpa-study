@@ -14,6 +14,16 @@ public class Member {
     //@Column(name = "username") field 명이 column 이름이랑 다를경우.
     private String name;
 
+    //JPA는 내부적으로 reflection을 쓰기때문에 동적으로 객체를 생성해놔야한다. 그래서 기본생성자가 필요하다.
+    public Member() {
+
+    }
+
+    public Member(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
