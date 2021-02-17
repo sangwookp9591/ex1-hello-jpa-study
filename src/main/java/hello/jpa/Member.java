@@ -81,7 +81,7 @@ public class Member {
 
     public String getDescription() {
         return description;
-    }
+    }ddd
 
     public void setDescription(String description) {
         this.description = description;
