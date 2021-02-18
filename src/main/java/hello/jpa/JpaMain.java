@@ -18,15 +18,30 @@ public class JpaMain {
         tx.begin();
 
         try{
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
-            Member member =  new Member();
+            Member member = new Member();
             member.setUsername("member1");
-            member.setTeam(team); //이러면 JPA가 알아서 TEAM에서 PK 값을 꺼내서 INSERT할때 FORGINE KEY 값을 사용한다.
-            //주인에다가 team 변경
+
             em.persist(member);
+
+            Team team = new Team();
+            team.setName("teamA");
+
+            //이내용은 team table에 insert디는게 아니다.
+            //이렇게되면 외래키가 바뀌어야 한다 연관관계가 바뀌는 거라서
+            //fk가 TEAM TABLE에 있는것이 아니라 MEMBER TABLE에 있기때문에.
+            team.getMembers().add(member);
+
+            em.persist(team);
+            tx.commit();
+//            Team team = new Team();
+//            team.setName("TeamA");
+//            em.persist(team);
+//
+//            Member member =  new Member();
+//            member.setUsername("member1");
+//            member.setTeam(team); //이러면 JPA가 알아서 TEAM에서 PK 값을 꺼내서 INSERT할때 FORGINE KEY 값을 사용한다.
+//            //주인에다가 team 변경
+//            em.persist(member);
 
             em.flush();
             em.clear();
