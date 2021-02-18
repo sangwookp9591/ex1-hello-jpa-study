@@ -18,11 +18,28 @@ public class JpaMain {
         tx.begin();
 
         try{
-            Member member =  new Member();
-            //member.setId("ID_A");
-            //member.setUsername("C");
+            //저장
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
 
+            Member member = new Member();
+            member.setUsername("member1");
+            member.changeTeam(team); //** 팀을 세팅하는 시점에 팀에도 member를 세팅할 수가 있다.
             em.persist(member);
+
+           em.flush();
+           em.clear();
+
+            Team findTeam = em.find(Team.class , team.getId());
+            List<Member> members = findTeam.getMembers();
+
+            System.out.println("=====================");
+
+            for (Member m : members) {
+                System.out.println("m = " + m.getUsername());
+            }
+
             tx.commit(); //commit시점에 query가 날라가게 된다.
         } catch (Exception e){
             tx.rollback();
