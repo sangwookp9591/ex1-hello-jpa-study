@@ -1,18 +1,35 @@
 package hello.jpa;
 
 import javax.persistence.*;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 @Entity
 public class Member {
-    @Id @GeneratedValue
-    @Column(name = "MEMBER_ID")
+    @Id
     private Long id;
 
-    @Column(name = "USERNAME")
+    @Column(name = "name",updatable = false) //DB의 컬럼명은 NAME이야 , updatable = false로 하면 이컬럼은 절때 변경되지 않는다.
     private String username;
 
-    @ManyToOne
-    private Team team;
+    private Integer age;
+
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
+    private LocalDate testLocalDate;
+    private LocalDateTime testLocalDateTime;
+
+    @Lob//DB에 VARCHAR를 넘어서는 큰 컨탠츠
+    private String description;
+    //Getter, Setter…
+
 
     public Long getId() {
         return id;
@@ -26,27 +43,47 @@ public class Member {
         return username;
     }
 
-    public void setUsername(String name) {
-        this.username = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Team getTeam() {
-        return team;
+    public Integer getAge() {
+        return age;
     }
 
-    public void changeTeam(Team team) {
-        this.team = team;
-
-        team.getMembers().add(this); //여기선 this가 Member이다 즉 나자신 instance를 넣어주는 것.
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
-/*    @Override
-    public String toString() {
-        return "Member{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", team=" + team +
-                '}';
-    }*/
-    //이렇게하면 team에서 team.toString을 또 호출한다. 근데 팀에가면 또 members-> member의 toString을 호출하게된다.
+    public RoleType getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(RoleType roleType) {
+        this.roleType = roleType;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
