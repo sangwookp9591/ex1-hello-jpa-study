@@ -6,6 +6,21 @@ import java.util.List;
 
 @Entity
 public class Team {
+<<<<<<< HEAD
+    @Id @GeneratedValue
+    @Column(name = "TEAM_ID")
+    private Long id;
+    private String name;
+
+    @OneToMany(mappedBy = "team")
+    private List<Member> members = new ArrayList<>();
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+=======
     @Id
     @GeneratedValue
     @Column(name = "TEAM_ID")
@@ -29,6 +44,7 @@ public class Team {
     }
 
     public void setId(long id) {
+>>>>>>> fe979c1f73d78dc6f265ed6abc3fad007aed27d0
         this.id = id;
     }
 
@@ -47,4 +63,16 @@ public class Team {
     public void setMembers(List<Member> members) {
         this.members = members;
     }
+<<<<<<< HEAD
+
+/*    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", members=" + members +
+                '}';
+    }*/
+=======
+>>>>>>> fe979c1f73d78dc6f265ed6abc3fad007aed27d0
 }

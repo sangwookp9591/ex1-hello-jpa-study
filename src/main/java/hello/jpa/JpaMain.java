@@ -9,73 +9,28 @@ import java.util.List;
 public class JpaMain {
 
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello"); //변수 추출하기 (Extract -> Variable) Ctrl+Alt+v
 
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = emf.createEntityManager(); //이름 일괄 변경하기 단축키 .. shift +f6 emf가 고객의 요청이 올때마다 em을 생성한다.
 
         EntityTransaction tx = em.getTransaction();
 
         tx.begin();
 
         try{
-            Member member = new Member();
-            member.setUsername("member1");
+            Member member =  new Member();
+            //member.setId("ID_A");
+            //member.setUsername("C");
 
             em.persist(member);
-
-            Team team = new Team();
-            team.setName("teamA");
-
-            //이내용은 team table에 insert디는게 아니다.
-            //이렇게되면 외래키가 바뀌어야 한다 연관관계가 바뀌는 거라서
-            //fk가 TEAM TABLE에 있는것이 아니라 MEMBER TABLE에 있기때문에.
-            team.getMembers().add(member);
-
-            em.persist(team);
-            tx.commit();
-//            Team team = new Team();
-//            team.setName("TeamA");
-//            em.persist(team);
-//
-//            Member member =  new Member();
-//            member.setUsername("member1");
-//            member.setTeam(team); //이러면 JPA가 알아서 TEAM에서 PK 값을 꺼내서 INSERT할때 FORGINE KEY 값을 사용한다.
-//            //주인에다가 team 변경
-//            em.persist(member);
-
-            em.flush();
-            em.clear();
-
-            Team findTeam = em.find(Team.class,team.getId());
-            List<Member> members = findTeam.getMembers();
-            for (Member m : members) {
-                System.out.println("m = "+ m.getUsername());
-            }
-            //이렇게 하게 되면 캐시값을 초기화하고 다시 조회해서 가져온다.
-            //이렇게 해야 깔끔하게 DB에서 값을 가져온다.
-
-           // Member findMember = em.find(Member.class, member.getId());
-            //Team findTeam = member.getTeam(); //조회시
-
-            //Team 을 바꿀 경우
-            //Team newTeam = em.find(Team.class, 100L);
-            //findMember.setTeam(newTeam);
-
-//            //양방향 연관관계
-//            Member findMember = em.find(Member.class, member.getId());
-//
-//            List<Member> members = findMember.getTeam().getMembers();
-//            for (Member m : members) {
-//                System.out.println("m = "+ m.getUsername());
-//            }
-            tx.commit();
+            tx.commit(); //commit시점에 query가 날라가게 된다.
         } catch (Exception e){
             tx.rollback();
         }finally {
-            em.close();
+            em.close(); // EntityManager가 내부적으로 DB CONNECTION을 물고 동작하기때문에 사용다하면 자원해제를 꼭해줘야한다.
         }
 
-        emf.close();
+        emf.close(); //WebApplication일 경우 was가 내려갈때 emf를 자원해제 해줘야한다 그래야 connection pooling이랑 resource가 내부적으로 release된다.
     }
 
 }
