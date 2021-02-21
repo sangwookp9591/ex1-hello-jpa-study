@@ -24,6 +24,7 @@ public class Member {
 
     //객체 지향 모델링할때는 2개를 설정해야한다. 관계가 뭔지?,이 관계를 할때 조인하는 컬럼은 뭐야?
 
+
     public Long getId() {
         return id;
     }
