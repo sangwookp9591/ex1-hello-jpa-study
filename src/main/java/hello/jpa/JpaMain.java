@@ -18,12 +18,19 @@ public class JpaMain {
         tx.begin();
 
         try{
-            Member member =  new Member();
-            //member.setId("ID_A");
-            //member.setUsername("C");
+            Member member = new Member();
+            member.setUsername("hello");
 
             em.persist(member);
-            tx.commit(); //commit시점에 query가 날라가게 된다.
+
+            em.flush();
+            em.clear();
+
+            Member findMember = em.find(Member.class, member.getId());
+            System.out.println("findMember.getId() = " + findMember.getId());
+            System.out.println("findMember.getUsername() = " + findMember.getUsername());
+
+            tx.commit();
         } catch (Exception e){
             tx.rollback();
         }finally {
