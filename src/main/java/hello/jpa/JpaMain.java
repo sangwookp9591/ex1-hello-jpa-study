@@ -20,6 +20,7 @@ public class JpaMain {
         try{
            Member member = new Member();
            member.setUsername("hello");
+
            member.setHomeAddress(new Address("city","street","zipcod"));
 
            em.persist(member);
