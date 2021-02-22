@@ -1,6 +1,6 @@
 package hello.jpa;
 
-import javax.persistence.*;
+        import javax.persistence.*;
 
 @Entity
 public class MemberProduct {
