@@ -29,8 +29,8 @@ public class JpaMain {
             member.getFavoriteFoods().add("족발");
             member.getFavoriteFoods().add("피자");
 
-            member.getAddressHistory().add(new Address("old1","street","zipcode"));
-            member.getAddressHistory().add(new Address("old2","street","zipcode"));
+            member.getAddressHistory().add(new AddressEntity("old1","street","zipcode"));
+            member.getAddressHistory().add(new AddressEntity("old2","street","zipcode"));
 
             em.persist(member);
 
@@ -51,32 +51,32 @@ public class JpaMain {
 //                System.out.println("favoriteFood = " + favoriteFood);
 //            }
 
-            //수정 예제
-            em.flush();
-            em.clear();
-
-            System.out.println(" =========================START=========================");
-            Member findMember = em.find(Member.class, member.getId());
-
-            //homeCity -> newCity
-
-            //findMember.getHomeAddress().setCity("newCity");
-            //이렇게 하면 되지 않나? -> x 이전에도 말했듯이 값타입이라는것은 이뮤터블 해야한다.
-            // why? 잘못하면 사이드 이팩트가 생기기 때문에!! 결론  setter를 쓰면안된다.
-            Address oldAddr = findMember.getHomeAddress();
-            findMember.setHomeAddress(new Address("newCity",oldAddr.getStreet(),oldAddr.getZipcode())); //아에 새로 넣어야한다.
-
-            //치킨 -> 한식
-            findMember.getFavoriteFoods().remove("치킨"); //치킨 지우고
-            findMember.getFavoriteFoods().add("한식"); //새로 add
-            //이것도 값타입이기때문에 통째로 갈아껴야한다 update를 할 수 없다.
-
-            //old1 -> new1
-            findMember.getAddressHistory().remove(new Address("old1","street","zipcode"));
-            //기본적인 컬렌셕은 대부분 이런 대상을 찾을 때 equals를 사용한다.
-            //그래서 아에 똑같은 것을 넣어야한다. 여기서 중요한게 이래서 equals와 hashCode를 제대로 구현해야한다.
-            // 제대로 구현하지 않으면 안지워진다.!
-            findMember.getAddressHistory().add(new Address("newCity1","street","zipcode"));
+//            //수정 예제
+//            em.flush();
+//            em.clear();
+//
+//            System.out.println(" =========================START=========================");
+//            Member findMember = em.find(Member.class, member.getId());
+//
+//            //homeCity -> newCity
+//
+//            //findMember.getHomeAddress().setCity("newCity");
+//            //이렇게 하면 되지 않나? -> x 이전에도 말했듯이 값타입이라는것은 이뮤터블 해야한다.
+//            // why? 잘못하면 사이드 이팩트가 생기기 때문에!! 결론  setter를 쓰면안된다.
+//            Address oldAddr = findMember.getHomeAddress();
+//            findMember.setHomeAddress(new Address("newCity",oldAddr.getStreet(),oldAddr.getZipcode())); //아에 새로 넣어야한다.
+//
+//            //치킨 -> 한식
+//            findMember.getFavoriteFoods().remove("치킨"); //치킨 지우고
+//            findMember.getFavoriteFoods().add("한식"); //새로 add
+//            //이것도 값타입이기때문에 통째로 갈아껴야한다 update를 할 수 없다.
+//
+//            //old1 -> new1
+//            findMember.getAddressHistory().remove(new Address("old1","street","zipcode"));
+//            //기본적인 컬렌셕은 대부분 이런 대상을 찾을 때 equals를 사용한다.
+//            //그래서 아에 똑같은 것을 넣어야한다. 여기서 중요한게 이래서 equals와 hashCode를 제대로 구현해야한다.
+//            // 제대로 구현하지 않으면 안지워진다.!
+//            findMember.getAddressHistory().add(new AddressEntity("newCity1","street","zipcode"));
 
             tx.commit();
         } catch (Exception e){

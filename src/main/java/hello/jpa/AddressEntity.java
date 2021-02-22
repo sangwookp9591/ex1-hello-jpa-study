@@ -14,11 +14,11 @@ public class AddressEntity {
 
     private Address address; //값 타입
 
-    public AddressEntity() {
+    public AddressEntity(String city, String street, String zipcode){
+        this.address =  new Address(city,street,zipcode);
     }
 
-    public AddressEntity(Long id, Address address) {
-        this.id = id;
+    public AddressEntity(Address address) {
         this.address = address;
     }
 

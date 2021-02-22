@@ -49,11 +49,11 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return Objects.equals(city, address.city) && Objects.equals(street, address.street) && Objects.equals(zipcode, address.zipcode);
+        return Objects.equals(getCity(), address.getCity()) && Objects.equals(getStreet(), address.getStreet()) && Objects.equals(getZipcode(), address.getZipcode());
     }
 
     @Override
-    public int hashCode() { //equals를 구현한면 항상 hashCode도 같이 구연해야한다. hashMap이라던가 자바 컬렉션에서 효율적으로 사용할 수 있다.
-        return Objects.hash(city, street, zipcode);
+    public int hashCode() {
+        return Objects.hash(getCity(), getStreet(), getZipcode());
     }
 }
