@@ -18,12 +18,30 @@ public class JpaMain {
         tx.begin();
 
         try{
-           Member member = new Member();
-           member.setUsername("hello");
 
-           member.setHomeAddress(new Address("city","street","zipcod"));
+            Address address= new Address(
+                    "city"
+                    ,"street"
+                    ,"zipcod");
 
-           em.persist(member);
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(address);
+            em.persist(member);
+
+            Address copyAddress = new Address(
+                    address.getCity()
+                    ,address.getStreet()
+                    ,address.getZipcode());
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setHomeAddress(copyAddress);
+            em.persist(member2);
+
+            //첫 번째 member의 주소를 newCity로 바꾸고 싶어.
+            member.getHomeAddress().setCity("newCity");
+
             tx.commit();
         } catch (Exception e){
             tx.rollback();
