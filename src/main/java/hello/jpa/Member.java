@@ -27,10 +27,18 @@ public class Member {
     @Column(name = "FOOD_NAME") //얘는 string 하나이기때문에 특이하게 얘만 매핑하게 허용을 해줌. 값이하나고 정의한게 아니기떄문에 예외적으로 설정.
     private Set<String> favoriteFoods = new HashSet<>();
 
-    @ElementCollection //값 타입 컬렉션
-    @CollectionTable(name = "ADDRESS" //테이블명 지정
-            , joinColumns = @JoinColumn(name = "MEMBER_ID"))// @JoinColumn = ""외래키로 잡게된다.
-    private List<Address> addressHistory =  new ArrayList<>();
+    //값타입 매핑
+//    @ElementCollection //값 타입 컬렉션
+//    @CollectionTable(name = "ADDRESS" //테이블명 지정
+//            , joinColumns = @JoinColumn(name = "MEMBER_ID"))// @JoinColumn = ""외래키로 잡게된다.
+//    private List<Address> addressHistory =  new ArrayList<>();
+
+    //엔티티 매핑
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    // 양방향으로 ManyToOne으로 해도 되지만 얘는 특별한 경우이기 때문에 caseCade로 정리
+    @JoinColumn(name= "MEMBER_ID")
+    private List<AddressEntity> addressHistory = new ArrayList<>();
+    //이렇게하면 값타입보다 쿼리 최적화에 훨씬 유횽하다
 
 
 //    @Embedded
@@ -90,4 +98,20 @@ public class Member {
     public void setHomeAddress(Address homeAddress) {
         this.homeAddress = homeAddress;
     }
+
+    public Set<String> getFavoriteFoods() {
+        return favoriteFoods;
+    }
+
+    public void setFavoriteFoods(Set<String> favoriteFoods) {
+        this.favoriteFoods = favoriteFoods;
+    }
+
+//    public List<Address> getAddressHistory() {
+//        return addressHistory;
+//    }
+//
+//    public void setAddressHistory(List<Address> addressHistory) {
+//        this.addressHistory = addressHistory;
+//    }
 }
